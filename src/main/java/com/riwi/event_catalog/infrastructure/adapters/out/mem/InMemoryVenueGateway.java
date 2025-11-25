@@ -1,7 +1,7 @@
-package com.riwi.event_catalog.repository.mem;
+package com.riwi.event_catalog.infrastructure.adapters.out.mem;
 
-import com.riwi.event_catalog.entity.VenueEntity;
-import com.riwi.event_catalog.repository.core.VenueGateway;
+import com.riwi.event_catalog.domain.model.Venue;
+import com.riwi.event_catalog.domain.ports.out.VenueGateway;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -14,31 +14,31 @@ import java.util.concurrent.atomic.AtomicLong;
 @Profile("mem")
 public class InMemoryVenueGateway implements VenueGateway {
 
-    private final List<VenueEntity> data = new ArrayList<>();
+    private final List<Venue> data = new ArrayList<>();
     private final AtomicLong sequence = new AtomicLong(0L);
 
     @Override
-    public List<VenueEntity> findAll() {
+    public List<Venue> findAll() {
         return new ArrayList<>(data);
     }
 
     @Override
-    public Optional<VenueEntity> findById(Long id) {
+    public Optional<Venue> findById(Long id) {
         return data.stream()
                 .filter(v -> v.getId().equals(id))
                 .findFirst();
     }
 
     @Override
-    public VenueEntity save(VenueEntity entity) {
-        if (entity.getId() == null) {
-            entity.setId(sequence.incrementAndGet());
-            data.add(entity);
+    public Venue save(Venue venue) {
+        if (venue.getId() == null) {
+            venue.setId(sequence.incrementAndGet());
+            data.add(venue);
         } else {
-            deleteById(entity.getId());
-            data.add(entity);
+            deleteById(venue.getId());
+            data.add(venue);
         }
-        return entity;
+        return venue;
     }
 
     @Override

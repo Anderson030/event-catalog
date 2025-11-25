@@ -1,4 +1,4 @@
-package com.riwi.event_catalog.service;
+package com.riwi.event_catalog.domain.ports.in;
 
 import com.riwi.event_catalog.dto.EventDTO;
 

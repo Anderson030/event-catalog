@@ -1,28 +1,23 @@
-package com.riwi.event_catalog.entity;
+package com.riwi.event_catalog.domain.model;
 
-import jakarta.persistence.*;
+import java.util.Objects;
 
-@Entity
-@Table(name = "venues")
-public class VenueEntity {
+public class Venue {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private String city;    // <--- NUEVO
-
-    @Column(nullable = false)
+    private String city;
     private int capacity;
 
-    public VenueEntity() {
+    public Venue() {
     }
 
-
+    public Venue(Long id, String name, String city, int capacity) {
+        this.id = id;
+        this.name = name;
+        this.city = city;
+        this.capacity = capacity;
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -35,4 +30,6 @@ public class VenueEntity {
 
     public int getCapacity() { return capacity; }
     public void setCapacity(int capacity) { this.capacity = capacity; }
+
+
 }

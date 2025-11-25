@@ -1,7 +1,7 @@
-package com.riwi.event_catalog.repository.mem;
+package com.riwi.event_catalog.infrastructure.adapters.out.mem;
 
-import com.riwi.event_catalog.entity.EventEntity;
-import com.riwi.event_catalog.repository.core.EventGateway;
+import com.riwi.event_catalog.domain.model.Event;
+import com.riwi.event_catalog.domain.ports.out.EventGateway;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -14,33 +14,31 @@ import java.util.concurrent.atomic.AtomicLong;
 @Profile("mem")
 public class InMemoryEventGateway implements EventGateway {
 
-    private final List<EventEntity> data = new ArrayList<>();
+    private final List<Event> data = new ArrayList<>();
     private final AtomicLong sequence = new AtomicLong(0L);
 
     @Override
-    public List<EventEntity> findAll() {
+    public List<Event> findAll() {
         return new ArrayList<>(data);
     }
 
     @Override
-    public Optional<EventEntity> findById(Long id) {
+    public Optional<Event> findById(Long id) {
         return data.stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst();
     }
 
     @Override
-    public EventEntity save(EventEntity entity) {
-        if (entity.getId() == null) {
-            // crear
-            entity.setId(sequence.incrementAndGet());
-            data.add(entity);
+    public Event save(Event event) {
+        if (event.getId() == null) {
+            event.setId(sequence.incrementAndGet());
+            data.add(event);
         } else {
-            // actualizar
-            deleteById(entity.getId());
-            data.add(entity);
+            data.removeIf(e -> e.getId().equals(event.getId()));
+            data.add(event);
         }
-        return entity;
+        return event;
     }
 
     @Override

@@ -1,7 +1,7 @@
-package com.riwi.event_catalog.controller;
+package com.riwi.event_catalog.infrastructure.adapters.in.web;
 
-import com.riwi.event_catalog.dto.EventDTO;
-import com.riwi.event_catalog.service.EventService;
+import com.riwi.event_catalog.dto.VenueDTO;
+import com.riwi.event_catalog.domain.ports.in.VenueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,33 +10,33 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/venues")
 @RequiredArgsConstructor
-public class EventController {
+public class VenueController {
 
-    private final EventService service;
+    private final VenueService service;
 
     @PostMapping
-    public ResponseEntity<EventDTO> create(@RequestBody EventDTO dto) {
-        EventDTO created = service.create(dto);
+    public ResponseEntity<VenueDTO> create(@RequestBody VenueDTO dto) {
+        VenueDTO created = service.create(dto);
         return ResponseEntity
-                .created(URI.create("/events/" + created.getId()))
+                .created(URI.create("/venues/" + created.getId()))
                 .body(created);
     }
 
     @GetMapping
-    public ResponseEntity<List<EventDTO>> getAll() {
+    public ResponseEntity<List<VenueDTO>> getAll() {
         return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EventDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<VenueDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(service.getById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EventDTO> update(@PathVariable Long id,
-                                           @RequestBody EventDTO dto) {
+    public ResponseEntity<VenueDTO> update(@PathVariable Long id,
+                                           @RequestBody VenueDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
