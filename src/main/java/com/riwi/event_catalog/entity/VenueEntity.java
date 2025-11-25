@@ -14,7 +14,7 @@ public class VenueEntity {
     private String name;
 
     @Column(nullable = false)
-    private String city;    // <--- NUEVO
+    private String city;
 
     @Column(nullable = false)
     private int capacity;
