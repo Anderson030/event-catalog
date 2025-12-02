@@ -1,11 +1,7 @@
 package com.riwi.event_catalog.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "events")
@@ -30,6 +26,8 @@ public class EventEntity {
     @Column(nullable = false)
     private String date;
 
-    @Column(name = "venue_id", nullable = false)
-    private Long venueId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "venue_id", nullable = false)
+    private VenueEntity venue;
 }

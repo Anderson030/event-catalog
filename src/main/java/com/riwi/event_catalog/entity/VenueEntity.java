@@ -1,9 +1,18 @@
 package com.riwi.event_catalog.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "venues")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class VenueEntity {
 
     @Id
@@ -17,22 +26,26 @@ public class VenueEntity {
     private String city;
 
     @Column(nullable = false)
-    private int capacity;
+    private Integer capacity;
 
-    public VenueEntity() {
+
+    @OneToMany(
+            mappedBy = "venue",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<EventEntity> events = new ArrayList<>();
+
+    // ===== Helpers de ciclo de vida =====
+
+    public void addEvent(EventEntity event) {
+        events.add(event);
+        event.setVenue(this);
     }
 
-
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getCity() { return city; }
-    public void setCity(String city) { this.city = city; }
-
-    public int getCapacity() { return capacity; }
-    public void setCapacity(int capacity) { this.capacity = capacity; }
+    public void removeEvent(EventEntity event) {
+        events.remove(event);
+        event.setVenue(null);
+    }
 }
